@@ -29,7 +29,7 @@ class EventsController < ApplicationController
 
         if @job.save!
           begin 
-            NotificationWorker.perform_at(Date.parse(@event.execution_date), @event.id)
+            NotificationWorker.perform_at(Date.parse(@job.execution_date), @job.id)
           rescue => e
             p "Failed to set the job process:", e
           end

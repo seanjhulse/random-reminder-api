@@ -4,9 +4,9 @@ class NotificationWorker
   def perform(id)
 
     # Do something
-    @event = Event.find(id)
+    @job = Job.find(id)
 
-    Rails.logger.info "Alert, you have a notification, #{@event.name}"
+    Rails.logger.info "Alert, you have a notification, #{@job.message}"
   end
 
   def cancelled?
