@@ -15,9 +15,8 @@ class DevicesController < ApplicationController
 
   # POST /devices
   def create
-    @device = Device.new(device_params)
-
-    if @device.save
+    @device = Device.new(device_params, user_id: current_user.id)
+    if @device.save!
       render json: @device, status: :created, location: @device
     else
       render json: @device.errors, status: :unprocessable_entity
