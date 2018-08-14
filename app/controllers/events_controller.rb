@@ -20,15 +20,18 @@ class EventsController < ApplicationController
     
     if @event.save
 
-      # create the jobs
       @event.count.times do
+        # picks a random date between begin and end time
         random_date = Time.at((@event.end_date.to_f - @event.begin_date.to_f)*rand + @event.begin_date.to_f)
         
+        # creates the job
         @event.jobs << Job.new(message: @event.name, execution_date: random_date)
+        
+        # saves the job
         @job = @event.jobs.last
-
         if @job.save!
-          begin 
+          begin
+            # begins the background worker
             NotificationWorker.perform_at(@job.execution_date, @job.id)
           rescue => e
             p "Failed to set the job process:", e
